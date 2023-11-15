@@ -126,6 +126,7 @@ class PoseAnalyzer:
             self.udpCommunicator.SendData(
                 "distance poignets : " + str(wristDistance))
             self.udpCommunicator.SendData("points du corps : " + str(peoples))
+            self.udpCommunicator.SendData("niveau_sonore_dB:" + str(self.soundAnalyzer.sound_level))
 
         return f
 
@@ -175,7 +176,7 @@ class PoseAnalyzer:
 class SoundAnalyzer(threading.Thread):
     def __init__(self, yolo_stopped, yolo_lock):
         threading.Thread.__init__(self)
-        self.udpCommunicator = U.UdpComms(udpIP="127.0.0.1", portTX=8002, portRX=8003, enableRX=True, suppressWarnings=True)
+        self.udpCommunicator = U.UdpComms(udpIP="127.0.0.1", portTX=8000, portRX=8001, enableRX=True, suppressWarnings=False)
         self.duration = 1.0
         self.threshold_applause = 60
         self.stop_event = threading.Event()
