@@ -61,6 +61,21 @@ cd ../danseV2
 python .\yoloV2.py
 
 ```
+
+-si vous souhaitez faire fonctionner l'armature, veuillez désactiver tous les autres objets de la scène (sauf l'armature) et lancez : 
+
+```bash
+
+python .\yoloV3.py
+
+```
+-si vous souhaitez faire fonctionner le feu, veuillez désactiver tous les autres objets de la scène (sauf MagicFire) et lancez : 
+
+```bash
+
+python .\capteursonV2.py
+
+```
 - Celui-ci lancera une version complète de YOLO avec les distances et angles entre le coude, l'épaule et la hanche ainsi que le coté sur lequel vous êtes le plus tourné.
 
 - De plus, il se connectera directement à Unity si vous lancez le script sous Unity en même temps. Ce qui vous permettra d'intéragir avec la balle (grossissement en écartant les mains et changement de couleur si bruit ambiant supérieur à 60 db (en beta) )
