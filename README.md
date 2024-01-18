@@ -2,6 +2,9 @@
 
 Bienvenue dans le Projet d'Interaction avec Yolo et Unity ! Ce projet vise à créer une expérience de danse interactive en fusionnant la danse avec la technologie. Vous trouverez ci-dessous des instructions détaillées pour l'installation et l'exécution du projet.
 
+## Attention si vous voulez lancer sur unity l'armature et le feu en même temps, il vous faudra changer les ports RX et TX.
+## Dans le cas contraire, il faudra disable tous les autres objets que vous n'utilisez pas. 
+
 ## Installation
 
 ### 1. Prérequis
