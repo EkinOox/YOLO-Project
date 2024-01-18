@@ -50,27 +50,3 @@ except KeyboardInterrupt:
     stream.close()
     p.terminate()
     udp_communicator.Close()
-
-
-
-#---------- V1 ----------#
-
-# import sounddevice as sd
-# import numpy as np
-
-# # Configuration de l'audio
-# duration = 1.0  # Durée de la capture audio en secondes
-
-# # Seuil pour la détection des applaudissements
-# seuil_applaudissements = 80  # Vous pouvez ajuster ce seuil en fonction de la sensibilité souhaitée
-
-# def audio_callback(indata, frames, time, status):
-#     if status:
-#         print(status, flush=True)
-#     if np.any(indata > seuil_applaudissements):
-#         print("Applaudissements détectés ! Déclenchement de l'événement...")
-#         # Ajoutez ici le code pour déclencher l'événement souhaité
-
-# # Ouvrir un flux audio en entrée (microphone)
-# with sd.InputStream(callback=audio_callback):
-#     sd.sleep(int(duration * 1000))

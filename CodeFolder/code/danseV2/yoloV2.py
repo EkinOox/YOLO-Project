@@ -63,7 +63,7 @@ class PoseAnalyzer:
     # Fonction pour traiter chaque frame de la caméra
     def processFrame(self, frame):
         # Effectuer les prédictions YOLO
-        results = self.model(frame, conf=0.6)
+        results = self.model(frame, conf=0.7)
         # results = self.model(frame, device="cuda")
         f = results[0].plot()
         keypoints = results[0].keypoints.xy.tolist()
