@@ -58,27 +58,17 @@ cd ../danseV2
 
 ```bash
 
-python .\yoloV2.py
+python .\yoloV4.py
 
 ```
 
--si vous souhaitez faire fonctionner l'armature, veuillez désactiver tous les autres objets de la scène (sauf l'armature) et lancez : 
-
-```bash
-
-python .\yoloV3.py
-
-```
--si vous souhaitez faire fonctionner le feu, veuillez désactiver tous les autres objets de la scène (sauf MagicFire) et lancez : 
+-si vous souhaitez faire fonctionner l'intéraction avec le feu, veuillez activer ce script en même temps que celui de YOLO dans un autre terminal (ainsi vous aurez deux terminer distincts)  : 
 
 ```bash
 
 python .\capteursonV2.py
 
 ```
-- Celui-ci lancera une version complète de YOLO avec les distances et angles entre le coude, l'épaule et la hanche ainsi que le coté sur lequel vous êtes le plus tourné.
-
-- De plus, il se connectera directement à Unity si vous lancez le script sous Unity en même temps. Ce qui vous permettra d'intéragir avec la balle (grossissement en écartant les mains et changement de couleur si bruit ambiant supérieur à 60 db (en beta) )
 
 - Pour une version plus allégé avec seulement l'estimation de pose voici une commande à executé dans votre terminal : 
 
@@ -90,7 +80,9 @@ yolo pose predict model=yolov8n-pose.pt source=0 show=true
 ## 2. Lancer Unity (version yolo plus complète) 
 
 - Ouvrez Unity Hub et sélectionnez votre projet (Danse).
-- Appuyez sur le bouton "Play" pour lancer le projet Unity.
+- Veuillez séléctionner le dossier "scène" et choisissez la scène présente dans le dossier.
+- Une fois fait, la scène apparaîtra, et vous n'aurez plus qu'à lancer les scripts python.
+- Puis vous pourrez appuyer sur le bouton "Play" pour lancer le projet Unity.
 
 # Annexe 
 
