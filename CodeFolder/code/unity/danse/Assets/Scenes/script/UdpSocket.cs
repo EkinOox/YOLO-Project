@@ -12,8 +12,8 @@ public class UdpSocket : MonoBehaviour
     public float wristDistance = 0.0f;
     public float soundLevel = 0.0f;
     [SerializeField] string IP = "127.0.0.1"; // local host
-    [SerializeField] int rxPort = 8000; // port to receive data from Python on
-    [SerializeField] int txPort = 8001; // port to send data to Python on
+    [SerializeField] int rxPort = 8002; // port to receive data from Python on
+    [SerializeField] int txPort = 8003; // port to send data to Python on
 
     // Create necessary UdpClient objects
     UdpClient client;

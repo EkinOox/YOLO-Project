@@ -1,4 +1,3 @@
-
 #---------- V2 ----------#
 import time
 import audioop
@@ -18,11 +17,13 @@ p = pyaudio.PyAudio()
 stream = p.open(format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK)
 
 # Configuration de la communication UDP avec Unity
-udp_communicator = UdpComms.UdpComms(udpIP="127.0.0.1", portTX=8000, portRX=8001, enableRX=True, suppressWarnings=False)
+udp_communicator = UdpComms.UdpComms(udpIP="127.0.0.1", portTX=8002, portRX=8003, enableRX=True, suppressWarnings=False)
 
 # Variables
 samples_per_section = 100
 sound_track = [0] * samples_per_section
+queue_size = 5
+sound_queue = []
 
 try:
     while True:
@@ -30,18 +31,23 @@ try:
         data = stream.read(CHUNK)
         reading = audioop.max(data, 2)
 
-        # Mettre à jour la piste audio
-        sound_track = sound_track[1:] + [reading]
+        # Mettre à jour la file d'attente des 5 dernières valeurs
+        if len(sound_queue) == queue_size:
+            sound_queue.pop(0)
+        sound_queue.append(reading)
+
+        # Calculer la moyenne des valeurs dans la file d'attente
+        average_reading = sum(sound_queue) / len(sound_queue)
 
         # Convertir la valeur en décibels
-        reference_value = 1  # Vous pouvez ajuster la valeur de référence selon vos besoins
-        decibels = 20 * math.log10(reading / reference_value)
+        reference_value = 1
+        decibels = 20 * math.log10(average_reading / reference_value)
 
         # Envoyer le niveau sonore à Unity
         udp_communicator.SendData(f"niveau_sonore_dB:{decibels:.2f}")
 
         # Afficher le niveau sonore en décibels dans la console
-        print(f"Niveau sonore en décibels : {decibels:.2f} dB")
+        # print(f"Niveau sonore en décibels : {decibels:.2f} dB")
         time.sleep(0.3)
 
 except KeyboardInterrupt:

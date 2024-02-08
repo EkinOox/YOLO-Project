@@ -56,8 +56,6 @@ public class UdpSocketV2 : MonoBehaviour
             byte[] data = client.Receive(ref remoteEndPoint);
             string message = Encoding.UTF8.GetString(data);
 
-            // ProcessInput(message);
-            // Ajoutez le code pour traiter les donnÃƒÂ©es de mouvement reÃƒÂ§ues depuis Python
             ProcessMovementData(message);
 
             yield return null;
@@ -78,13 +76,21 @@ public class UdpSocketV2 : MonoBehaviour
                 float rightArmAngle = rootNode["'rightArmAngle'"].AsFloat;
                 float leftShoulderAngle = rootNode["'leftShoulderAngle'"].AsFloat;
                 float rightShoulderAngle = rootNode["'rightShoulderAngle'"].AsFloat;
+                float headPositionY = rootNode["'headPositionY'"].AsFloat;
+                string headPosition = rootNode["'headPosition'"].Value;
+                string leftWristPosition = rootNode["'leftWristPosition'"].Value;
+                string rightWristPosition = rootNode["'rightWristPosition'"].Value;
 
                 Debug.Log("Left Arm Angle: " + leftArmAngle);
                 Debug.Log("Right Arm Angle: " + rightArmAngle);
                 Debug.Log("Left Shoulder Angle: " + leftShoulderAngle);
                 Debug.Log("Right Shoulder Angle: " + rightShoulderAngle);
+                Debug.Log("Head Position Y : " + headPositionY);
+                Debug.Log("Head Position : " + headPosition);
+                Debug.Log("Left Wrist Position: " + leftWristPosition);
+                Debug.Log("Right Wrist Position: " + rightWristPosition);
 
-                ApplyRotations(leftArmAngle, rightArmAngle, leftShoulderAngle, rightShoulderAngle);
+                ApplyRotations(leftArmAngle, rightArmAngle, leftShoulderAngle, rightShoulderAngle, headPosition, headPositionY, leftWristPosition, rightWristPosition);
             }
             else
             {
@@ -97,7 +103,7 @@ public class UdpSocketV2 : MonoBehaviour
         }
     }
 
-    private void ApplyRotations(float leftArmAngle, float rightArmAngle, float leftShoulderAngle,float rightShoulderAngle)
+    private void ApplyRotations(float leftArmAngle, float rightArmAngle, float leftShoulderAngle, float rightShoulderAngle, string headPosition, float headPositionY, string leftWristPosition, string rightWristPosition)
     {
         // Appliquer les rotations aux parties du bras gauche
         GameObject upperArmLeft = GameObject.Find("Left_UpperArm");
@@ -111,20 +117,67 @@ public class UdpSocketV2 : MonoBehaviour
         GameObject leftShoulder = GameObject.Find("Left_Shoulder");
         GameObject rightShoulder = GameObject.Find("Right_Shoulder");
 
+        GameObject head = GameObject.Find("Head");
+
         // Vérifier si les GameObjects sont trouvés
         if (upperArmLeft != null && lowerArmLeft != null &&
             upperArmRight != null && lowerArmRight != null &&
-            leftShoulder != null && rightShoulder != null)
+            leftShoulder != null && rightShoulder != null && head != null)
         {
-            Debug.Log("All GameObjects found. Applying rotations...");
 
-            // Inverser l'axe Z pour les parties du bras
-            ApplyRotation(upperArmLeft, leftArmAngle, Vector3.forward);
-            ApplyRotation(lowerArmLeft, -leftArmAngle, Vector3.forward);
 
-            ApplyRotation(upperArmRight, rightArmAngle, Vector3.forward);
-            ApplyRotation(lowerArmRight, -rightArmAngle, Vector3.forward);
+            if (leftWristPosition == "'up'")
+            {
+                float invertedAngle = 180f + leftArmAngle;
+                float invertedShoulderAngle = 180f - leftShoulderAngle;
+                ApplyRotation(lowerArmLeft, invertedAngle, Vector3.forward);
+                ApplyRotation(upperArmLeft, invertedShoulderAngle, Vector3.forward);
+                if (leftArmAngle == 0f)
+                {
+                    ApplyRotation(lowerArmLeft, 43f , Vector3.right);
+                    ApplyRotation(upperArmLeft, 150f, Vector3.forward);
+                }
+            }
+            else if (leftWristPosition == "'down'")
+            {
+                float invertedAngle = 180f - leftArmAngle;
+                float invertedShoulderAngle = 180f - leftShoulderAngle;
+                ApplyRotation(lowerArmLeft, invertedAngle, Vector3.forward);
+                ApplyRotation(upperArmLeft, invertedShoulderAngle, Vector3.forward);
+            }
 
+            if (rightWristPosition == "'up'")
+            {
+                float invertedAngle = 180f + rightArmAngle;
+                float invertedShoulderAngle = 180f - rightShoulderAngle;
+                ApplyRotation(lowerArmRight, invertedAngle, Vector3.forward);
+                ApplyRotation(upperArmRight, invertedShoulderAngle, Vector3.forward);
+                if (rightArmAngle == 0f)
+                {
+                    ApplyRotation(lowerArmRight, 43f , Vector3.right);
+                    ApplyRotation(upperArmRight, 150f, Vector3.forward);
+                }
+            }
+            else if (rightWristPosition == "'down'")
+            {
+                float invertedAngle = 180f - rightArmAngle;
+                float invertedShoulderAngle = 180f - rightShoulderAngle;
+                ApplyRotation(lowerArmRight, invertedAngle, Vector3.forward);
+                ApplyRotation(upperArmRight, invertedShoulderAngle, Vector3.forward);
+            }
+
+            if (headPosition == "'gauche'")
+            {
+                ApplyRotation(head, -headPositionY - 140, Vector3.up);
+            }
+            else if (headPosition == "'droite'")
+            {
+                ApplyRotation(head, headPositionY + 140, Vector3.up);
+            }
+            else if (headPosition == "'centre'")
+            {
+                ApplyRotation(head, 0, Vector3.up);
+            }
         }
         else
         {
